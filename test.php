@@ -2,27 +2,28 @@
 class Solution {
 
     /**
-     * @param Float $x
-     * @param Integer $n
-     * @return Float
+     * @param Integer[] $nums
+     * @return Integer[][]
      */
-    function myPow($x, $n) {
-        $un = (float) $n;
-        if($n<0){
-            $x = 1/$x;
-            $un = -$un;
+    function subsets($nums) {
+        $res = [];
+        if (count($nums)==0) {
+            return $res;
         }
-        return $this->fastPow($x,$un);
+        $this->helper($nums,$res,0,[]);
+        return $res;
     }
 
-    function fastPow($x,$n){
-        if($n == 0) return 1.0;
-        $half = $this->fastPow($x,floor($n/2));
-        if(fmod($n,2)==0){
-            return $half*$half;
-        }else{
-            return $half*$half*$x;
+    private function helper(array $nums, array &$res, int $level, array $tmp)
+    {
+        //terminator
+        if ($level==count($nums)) {
+            array_push($res,$tmp);
+            return;
         }
+
+        $this->helper($nums,$res,$level+1,$tmp); //not pick the number
+        array_push($tmp,$nums[$level]);
+        $this->helper($nums,$res,$level+1,$tmp);
     }
 }
-
